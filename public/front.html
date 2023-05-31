@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Produtos</title>
+  <style>
+    /* Estilos CSS para o FrontEnd */
+    body {
+      background-color: lightblue;
+    }
+    .produto-button {
+      background-color: darkorange;
+      color: white;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Produtos</h1>
+
+  <div id="produtosContainer"></div>
+
+  <script>
+    // Função para fazer a requisição GET aos produtos
+    async function getProdutos() {
+      try {
+        const response = await fetch('http://localhost:4000/produtos');
+        const data = await response.json();
+
+        // Atualiza o conteúdo na página com os produtos retornados
+        const produtosContainer = document.getElementById('produtosContainer');
+        produtosContainer.innerHTML = '';
+
+        data.forEach(produto => {
+          const produtoElement = document.createElement('div');
+          produtoElement.innerHTML = `
+            <button class="produto-button">ID: ${produto.id}</button>
+            <button class="produto-button">Descrição: ${produto.descricao}</button>
+            <button class="produto-button">Preço: ${produto.preco}</button>
+            <hr>
+          `;
+
+          produtosContainer.appendChild(produtoElement);
+        });
+      } catch (error) {
+        console.log('Erro ao obter produtos:', error);
+      }
+    }
+
+    // Chama a função para obter os produtos quando a página carregar
+    window.addEventListener('DOMContentLoaded', getProdutos);
+  </script>
+</body>
+</html>
